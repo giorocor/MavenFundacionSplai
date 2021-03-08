@@ -20,6 +20,10 @@ import java.awt.event.MouseListener;
 import javax.swing.UIManager;
 import javax.swing.ImageIcon;
 import java.awt.GridLayout;
+import java.awt.Image;
+
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 public class JuegoMemoria extends JFrame {
 
@@ -43,6 +47,10 @@ public class JuegoMemoria extends JFrame {
 	Cartas boton1;
 	Cartas boton2;
 	int puntaje=0;
+	int intentos=1;
+	
+	private final JTextField textField = new JTextField();
+	private final JLabel lblNewLabel = new JLabel("Numero de Intentos:");
 	
 	
 	
@@ -64,7 +72,6 @@ public class JuegoMemoria extends JFrame {
 			}
 		});
 		
-		IniciarJuego();
 	}
 
 
@@ -93,6 +100,12 @@ public class JuegoMemoria extends JFrame {
 		contentPane.add(Button_3);
 		contentPane.add(Button_9);
 		contentPane.add(Button_11);
+
+		
+		contentPane.add(lblNewLabel);
+		textField.setColumns(10);
+		
+		contentPane.add(textField);
 		
 		
 		MouseListener clickButton =new MouseListener() {
@@ -106,9 +119,18 @@ public class JuegoMemoria extends JFrame {
 				}else if(click==2) {
 					seleccionado();
 					click=0;
+					if(!(boton1==null)) {
+						boton1.setIcon(null);
+						boton2.setIcon(null);
+					}
 				}else {
 					click=0;
 					seleccionado();
+					if(!(boton1==null)) {
+						boton1.setIcon(null);
+						boton2.setIcon(null);
+					}
+						
 				}
 		
 			}
@@ -121,12 +143,15 @@ public class JuegoMemoria extends JFrame {
 					boton1 = ((Cartas)e.getComponent());
 					boton1.setEnabled(true);
 					botonSelect1=((Cartas)e.getComponent()).getPocision();
-					System.out.println(botonSelect1);
+					insertarImagenes(boton1);
+					
 				}else if(click==2) {
 					
 					boton2 = ((Cartas)e.getComponent());
 					botonSelect2=((Cartas)e.getComponent()).getPocision();
-					System.out.println(botonSelect2);
+					textField.setText(String.valueOf(intentos++));
+					insertarImagenes(boton2);
+					
 					if(!(boton1==boton2)) {
 						if(botonSelect1==botonSelect2) {
 							boton1.setVisible(false);
@@ -136,6 +161,9 @@ public class JuegoMemoria extends JFrame {
 								JOptionPane.showMessageDialog(null, "En hora Buena");
 							}
 						}
+					}else {
+						boton1.setIcon(null);
+						boton2.setIcon(null);
 					}
 				}
 				
@@ -176,11 +204,40 @@ public class JuegoMemoria extends JFrame {
 
 		colores();
 		seleccionado();
-		
-		
-	}
+	
 
+	}
+	
+	public void insertarImagenes(Cartas boton) {
 		
+		switch (boton.getPocision()) {
+		case 1:
+			elegirImagen(boton.getPocision(), boton);
+			break;
+		case 2:
+			elegirImagen(boton.getPocision(), boton);
+			break;
+		case 3:
+			elegirImagen(boton.getPocision(), boton);
+			break;
+		case 4:
+			elegirImagen(boton.getPocision(), boton);
+			break;
+		case 5:
+			elegirImagen(boton.getPocision(), boton);
+			break;
+		case 6:
+			elegirImagen(boton.getPocision(), boton);
+			break;
+		default:
+			break;
+		}
+	}
+		
+	
+	public void elegirImagen(int i,Cartas boton) {
+		boton.setIcon(new ImageIcon((new ImageIcon(JuegoMemoria.class.getResource("/com/jarroba/ejemplo/primeraMaven/Imagenes/"+i+".png")).getImage()).getScaledInstance(50, 50, Image.SCALE_SMOOTH)));
+	}
 	
 	public static void colores() {
 		Button_0.setBackground(Color.green);
@@ -212,7 +269,5 @@ public class JuegoMemoria extends JFrame {
 		Button_11.setSelected(true);
 	}
 	
-	public static void IniciarJuego() {
-	
-	}
+
 }
